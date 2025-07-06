@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Cancelar Consulta</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f7f9fa; padding: 40px; }
+        .container { max-width: 700px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
+        .mensagem { margin: 20px 0; padding: 15px; border-radius: 5px; }
+        .sucesso { background-color: #c8e6c9; color: #2e7d32; }
+        .erro { background-color: #ffcdd2; color: #b71c1c; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+        button { padding: 8px 15px; background-color: #b71c1c; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #7f0000; }
+        .voltar { text-align: center; margin-top: 25px; }
+        .voltar a { color: #1d72b8; text-decoration: none; }
+        .voltar a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Cancelar Consulta</h2>
+
+        {% if mensagem %}
+            <div class="mensagem {% if 'sucesso' in mensagem %}sucesso{% else %}erro{% endif %}">
+                {{ mensagem }}
+            </div>
+        {% endif %}
+
+        {% if consultas %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Paciente</th>
+                        <th>Data e Hora</th>
+                        <th>Sala</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for consulta in consultas %}
+                    <tr>
+                        <td>{{ consulta.paciente.nome }}</td>
+                        <td>{{ consulta.data_hora|date:"d/m/Y H:i" }}</td>
+                        <td>{{ consulta.sala.numero }}</td>
+                        <td>
+                            <form method="post" action="{% url 'cancelar_consulta' %}" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="consulta_id" value="{{ consulta.id }}">
+                                <button type="submit" onclick="return confirm('Tem certeza que deseja cancelar esta consulta?')">Cancelar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Você não possui consultas agendadas.</p>
+        {% endif %}
+
+        <div class="voltar">
+            <a href="{% url 'dashboard' %}">← Voltar ao Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>
