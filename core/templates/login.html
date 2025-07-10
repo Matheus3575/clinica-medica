@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Login - Clínica</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login Médico</h2>
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+            <ul class="errorlist">
+                {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <label for="id_username">CRM</label>
+            {{ form.username }}
+
+            <label for="id_password">Senha</label>
+            {{ form.password }}
+
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+</body>
+</html>

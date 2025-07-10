@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Agendar Consulta</title>
+    <link rel="stylesheet" href="{% static 'css/agendar_consulta.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Agendar Consulta</h2>
+
+        {% if alerta %}
+            <div class="alerta">{{ alerta }}</div>
+        {% endif %}
+
+        {% if sucesso %}
+            <div class="sucesso">{{ sucesso }}</div>
+        {% endif %}
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div class="alerta">{{ field.errors }}</div>
+                {% endif %}
+            {% endfor %}
+
+            <div id="alerta-dinamico"></div>
+
+            <button type="submit">Agendar</button>
+        </form>
+
+        <div id="info-sala"></div>
+
+        <div class="voltar">
+            <a href="{% url 'dashboard' %}">← Voltar ao Dashboard</a>
+        </div>
+    </div>
+
+<script href="../static/js/agendar_consulta.js"></script>
+
+</body>
+</html>

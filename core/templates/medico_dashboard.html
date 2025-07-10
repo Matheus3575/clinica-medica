@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Dr(a) {{ medico.nome }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/medico_dashboard.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Bem-vindo, Dr(a). {{ medico.nome }}</h2>
+
+        <div class="menu">
+            <a href="{% url 'agendar_consulta' %}">Agendar Consulta</a>
+            <a href="{% url 'cancelar_consulta' %}">Cancelar Consulta</a>
+            <a href="{% url 'realizar_consulta' %}">Realizar Consulta</a>
+
+            <!-- Formulário para logout via POST -->
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Sair</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

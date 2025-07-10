@@ -18,7 +18,7 @@ def medico_dashboard(request):
         return redirect('logout')  # segurança
 
     context = {'medico': medico}
-    return render(request, 'core/medico_dashboard.html', context)
+    return render(request, 'medico_dashboard.html', context)
 
 @login_required
 def agendar_consulta(request):
@@ -60,7 +60,7 @@ def agendar_consulta(request):
     else:
         form = AgendarConsultaForm()
 
-    return render(request, 'core/agendar_consulta.html', {'form': form, 'alerta': alerta, 'sucesso': sucesso})
+    return render(request, 'agendar_consulta.html', {'form': form, 'alerta': alerta, 'sucesso': sucesso})
 
 @login_required
 def paciente_info(request, paciente_id):
@@ -131,7 +131,7 @@ def cancelar_consulta(request):
         'consultas': consultas,
         'mensagem': mensagem,
     }
-    return render(request, 'core/cancelar_consulta.html', context)
+    return render(request, 'cancelar_consulta.html', context)
 
 @login_required
 def realizar_consulta(request):
@@ -169,36 +169,36 @@ def realizar_consulta(request):
 
     if request.method == 'POST':
     	# Finalizar consulta
-    	if 'consulta_descritiva' in request.POST and form.is_valid():
-        	consulta.consulta_descritiva = form.cleaned_data['consulta_descritiva']
-        	consulta.save()
-        	messages.success(request, "Consulta finalizada com sucesso.")
-        	return redirect(f"{request.path}?id={consulta.id}")
+        if 'consulta_descritiva' in request.POST and form.is_valid():
+            consulta.consulta_descritiva = form.cleaned_data['consulta_descritiva']
+            consulta.save()
+            messages.success(request, "Consulta finalizada com sucesso.")
+            return redirect(f"{request.path}?id={consulta.id}")
 
     	# Criar prescrição
-    	if 'medicamento' in request.POST and prescricao_form.is_valid():
-        	medicamento = prescricao_form.cleaned_data['medicamento']
-        	quantidade = prescricao_form.cleaned_data['quantidade']
+        if 'medicamento' in request.POST and prescricao_form.is_valid():
+            medicamento = prescricao_form.cleaned_data['medicamento']
+            quantidade = prescricao_form.cleaned_data['quantidade']
 
-        	if medicamento.estoque_minimo < quantidade:
-            		messages.error(request, f"Estoque insuficiente de {medicamento.nome}. Disponível: {medicamento.estoque_minimo}")
-        	else:
-            		Prescricao.objects.create(
-                		consulta=consulta,
-                		medicamento=medicamento,
-                		dosagem=prescricao_form.cleaned_data['dosagem'],
-                		duracao=prescricao_form.cleaned_data['duracao'],
-                		periodicidade=prescricao_form.cleaned_data['periodicidade'],
-                		necessita_alimentacao=prescricao_form.cleaned_data['necessita_alimentacao'],
-                		horario_especifico=prescricao_form.cleaned_data['horario_especifico'],
-                		quantidade=quantidade
-            	)
-            		medicamento.estoque_minimo -= quantidade
-            		medicamento.save()
-            		messages.success(request, f"Prescrição adicionada. Estoque de {medicamento.nome} atualizado.")
-            		return redirect(f"{request.path}?id={consulta.id}")
+            if medicamento.estoque_minimo < quantidade:
+            	messages.error(request, f"Estoque insuficiente de {medicamento.nome}. Disponível: {medicamento.estoque_minimo}")
+            else:
+                Prescricao.objects.create(
+                consulta=consulta,
+                medicamento=medicamento,
+                dosagem=prescricao_form.cleaned_data['dosagem'],
+                duracao=prescricao_form.cleaned_data['duracao'],
+                periodicidade=prescricao_form.cleaned_data['periodicidade'],
+                necessita_alimentacao=prescricao_form.cleaned_data['necessita_alimentacao'],
+                horario_especifico=prescricao_form.cleaned_data['horario_especifico'],
+                quantidade=quantidade
+            )
+                medicamento.estoque_minimo -= quantidade
+                medicamento.save()
+                messages.success(request, f"Prescrição adicionada. Estoque de {medicamento.nome} atualizado.")
+                return redirect(f"{request.path}?id={consulta.id}")
 
-    	elif 'agendar_nova' in request.POST:
+        elif 'agendar_nova' in request.POST:
             if agendar_form.is_valid():
                 paciente_novo = agendar_form.cleaned_data['paciente']
 
@@ -216,7 +216,7 @@ def realizar_consulta(request):
                 messages.success(request, "Nova consulta agendada com sucesso!")
                 return redirect(f"{request.path}?id={consulta.id}")
 
-    return render(request, 'core/realizar_consulta.html', {
+    return render(request, 'realizar_consulta.html', {
         'consultas': consultas,
         'consulta': consulta,
         'form': form,
@@ -224,9 +224,9 @@ def realizar_consulta(request):
         'consultas_passadas': consultas_passadas,
         'prescricao_form': prescricao_form,
         'prescricoes': prescricoes,
-	'agendar_form': agendar_form,
+	    'agendar_form': agendar_form,
     })
     
-    def logout_view(request):
-    	logout(request)
-    	return redirect('login')
+def logout_view(request):
+    logout(request)
+    return redirect('login')

@@ -1,0 +1,138 @@
+html, body {
+    margin: 0; padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+header {
+    background: #1d72b8;
+    color: white;
+    padding: 1rem;
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-align: center;
+}
+main {
+    flex: 1;
+    padding: 10px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+section.consultas-list {
+    margin-bottom: 20px;
+}
+.consultas-list ul {
+    padding-left: 0;
+    list-style: none;
+}
+.consultas-list li {
+    margin-bottom: 8px;
+}
+.consultas-list a {
+    text-decoration: none;
+    color: #1d72b8;
+}
+.consultas-list a:hover, .consultas-list a:focus {
+    text-decoration: underline;
+}
+section.info-consulta p {
+    font-weight: 600;
+    margin: 4px 0;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+label {
+    font-weight: 600;
+    margin: 10px 0 8px;
+    font-size: 1.2rem;
+}
+textarea {
+    flex-grow: 1;
+    width: 100%;
+    min-height: 70vh;
+    resize: vertical;
+    font-size: 1.1rem;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 2px solid #1d72b8;
+    outline-offset: 2px;
+    outline-color: transparent;
+    transition: outline-color 0.3s ease;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+textarea:focus {
+    outline-color: #155d8b;
+    box-shadow: 0 0 8px #155d8baa;
+}
+button {
+    margin-top: 1rem;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background: #1d72b8;
+    color: white;
+    transition: background-color 0.3s ease;
+    align-self: flex-start;
+    width: 250px;
+}
+button:hover, button:focus {
+    background-color: #155d8b;
+}
+.alerta {
+    background: #ffcdd2;
+    color: #b71c1c;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+.finalizar-flutuante {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 8px;
+    background-color: #1d72b8;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+}
+.finalizar-flutuante:hover {
+    background-color: #155d8b;
+}
+footer {
+    padding: 1rem 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    background: #f0f0f0;
+    border-top: 1px solid #ddd;
+    width: 100%;
+    box-sizing: border-box;
+}
+footer a {
+    color: #1d72b8;
+    text-decoration: none;
+    font-weight: 600;
+}
+footer a:hover {
+    text-decoration: underline;
+}
