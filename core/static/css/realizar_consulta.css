@@ -101,6 +101,15 @@ button:hover, button:focus {
     margin-bottom: 10px;
     border-radius: 4px;
 }
+
+.alerta-success {
+    background: #98f598;
+    color: #0b611d;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
 .finalizar-flutuante {
     position: fixed;
     bottom: 25px;

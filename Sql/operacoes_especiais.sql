@@ -55,7 +55,7 @@ FOR EACH ROW
 BEGIN
     UPDATE Medicamento
     SET estoque = estoque - NEW.quantidade
-    WHERE id_medicamento = NEW.id_medicamento;
+    WHERE id_medicamento = NEW.id_medicamento
     AND estoque >= NEW.quantidade;  -- Impede estoque negativo
 END;
 

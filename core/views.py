@@ -181,7 +181,7 @@ def realizar_consulta(request):
             quantidade = prescricao_form.cleaned_data['quantidade']
 
             if medicamento.estoque_minimo < quantidade:
-            	messages.error(request, f"Estoque insuficiente de {medicamento.nome}. Disponível: {medicamento.estoque_minimo}")
+                messages.error(request, f"Estoque insuficiente de {medicamento.nome}. Disponível: {medicamento.estoque_minimo}")
             else:
                 Prescricao.objects.create(
                 consulta=consulta,
@@ -224,7 +224,7 @@ def realizar_consulta(request):
         'consultas_passadas': consultas_passadas,
         'prescricao_form': prescricao_form,
         'prescricoes': prescricoes,
-	    'agendar_form': agendar_form,
+        'agendar_form': agendar_form,
     })
     
 def logout_view(request):
