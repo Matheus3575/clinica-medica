@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from datetime import date
 from core.models import Medico, Paciente, Acolhimento, Consulta, Sala, Equipamento, Ultrassom, Alergia, Prescricao,Medicamento
 from core.forms import AgendarConsultaForm
 from datetime import timedelta
-from .forms import FinalizarConsultaForm,PrescricaoForm, AgendarRetornoForm
+from .forms import FinalizarConsultaForm, PrescricaoForm, AgendarRetornoForm, MedicoUpdateForm
 from django.contrib import messages
 from django.utils import timezone
 from datetime import datetime , time
@@ -226,7 +226,43 @@ def realizar_consulta(request):
         'prescricoes': prescricoes,
         'agendar_form': agendar_form,
     })
-    
+
+@login_required
+def medico_perfil(request):
+    medico = get_object_or_404(Medico, user=request.user)
+    if request.method == 'POST':
+        form = MedicoUpdateForm(request.POST, instance=medico)
+        if form.is_valid():
+            form.save()
+            return render(request, 'medico_perfil.html', {'form': form, 'success': True})
+        else:
+            form = MedicoUpdateForm(instance=medico)
+            return render(request, 'medico_perfil.html', {'form': form})
+    else:
+        form = MedicoUpdateForm(instance=medico)
+        return render(request, 'medico_perfil.html', {'form': form})
+
+@login_required
+def paciente_perfil(request, paciente_id):
+    paciente = get_object_or_404(Paciente, id=paciente_id)
+    consultas = Consulta.objects.filter(paciente = paciente).order_by('-data_hora')
+    alergias = Alergia.objects.filter(paciente=paciente)
+    acolhimento = Acolhimento.objects.filter(paciente=paciente).order_by('-data_hora').first()
+    prescricoes = Prescricao.objects.filter(consulta__paciente=paciente)
+    hoje = date.today()
+    idade = hoje.year - paciente.data_nascimento.year - ((hoje.month, hoje.day) < (paciente.data_nascimento.month, paciente.data_nascimento.day))
+
+
+    return render(request, 'paciente_perfil.html', {
+        'paciente': paciente,
+        'consultas': consultas,
+        'alergias': alergias,
+        'acolhimento': acolhimento,
+        'prescricoes': prescricoes,
+        'idade': idade,
+    })
+
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('login')

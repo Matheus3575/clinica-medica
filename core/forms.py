@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Consulta, Paciente, Sala, Medicamento,Prescricao
+from .models import Consulta, Paciente, Sala, Medicamento, Prescricao, Medico
 
 
 class AgendarConsultaForm(forms.Form):
@@ -78,3 +78,8 @@ class AgendarRetornoForm(forms.Form):
             self.fields['paciente'].queryset = qs
 
         self.fields['sala'].label_from_instance = lambda obj: f"Sala {obj.numero}"
+
+class MedicoUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Medico
+        fields = ['nome','telefone1','telefone2']

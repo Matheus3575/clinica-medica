@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil do Paciente</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/perfil_paciente.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Perfil do Paciente</h2>
+        <div class="perfil-tabela">
+            <img src="https://i.pinimg.com/474x/21/9e/ae/219eaea67aafa864db091919ce3f5d82.jpg" alt="Foto do paciente" class="perfil-foto">
+            
+            <div class="perfil-celula">
+                <span class="perfil-label">Nome:</span> {{ paciente.nome }}
+            </div>
+            <div class="perfil-celula">
+                <span class="perfil-label">Idade:</span> {{ idade }} anos
+            </div>
+            
+            <div class="perfil-celula">
+                <span class="perfil-label">Contato:</span> {{ paciente.telefone }}
+            </div>
+            <div class="perfil-celula">
+                <span class="perfil-label">E-mail:</span> {{ paciente.email }}
+            </div>
+            
+            <div class="perfil-celula">
+                <span class="perfil-label">Prontuário:</span> {{ paciente.prontuario }}
+            </div>
+            
+            <div class="perfil-endereco">
+                <span class="perfil-label">Endereço:</span> {{ paciente.endereco|default:"Não informado" }}
+            </div>
+        </div>
+        <div class="card">
+            <h4>Alergias</h4>
+            {% if alergias %}
+                <ul>
+                    {% for alergia in alergias %}
+                        <li>{{ alergia.nome }}{% if alergia.gravidade >= 7 %} <span style="color:red;">(Grave)</span>{% endif %}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Sem alergias registradas.</p>
+            {% endif %}
+        </div>
+        <div class="card">
+            <h4>Último Acolhimento</h4>
+            {% if acolhimento %}
+                <p><strong>Peso:</strong> {{ acolhimento.peso }} kg</p>
+                <p><strong>Altura:</strong> {{ acolhimento.altura }} m</p>
+            {% else %}
+                <p>Sem dados de acolhimento.</p>
+            {% endif %}
+        </div>
+        <div class="card">
+            <h4>Histórico de Consultas</h4>
+            {% if consultas %}
+                <ul>
+                    {% for consulta in consultas %}
+                        <li>
+                            {{ consulta.data_hora|date:"d/m/Y H:i" }} — {{ consulta.medico.nome }}
+                            {% if consulta.consulta_descritiva %}
+                                <br><em>{{ consulta.consulta_descritiva }}</em>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Sem consultas registradas.</p>
+            {% endif %}
+        </div>
+        <div class="card">
+            <h4>Prescrições</h4>
+            {% if prescricoes %}
+                <ul>
+                    {% for prescricao in prescricoes %}
+                        <li>
+                            {{ prescricao.consulta.data_hora|date:"d/m/Y" }} - {{ prescricao.medicamento.nome }} ({{ prescricao.dosagem }}, {{ prescricao.quantidade }}x, {{ prescricao.duracao }} dias)
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Sem prescrições registradas.</p>
+            {% endif %}
+        </div>
+        <a href="{% url 'dashboard' %}">← Voltar ao Dashboard</a>
+    </div>
+</body>
+</html>

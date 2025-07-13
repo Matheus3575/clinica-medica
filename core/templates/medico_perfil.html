@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Espaço do Médico</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/medico_perfil.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Espaço do Médico</h2>
+        {% if success %}
+            <div class="alerta-success">Dados atualizados com sucesso!</div>
+        {% endif %}
+        <form method="post" class="card">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Salvar Alterações</button>
+        </form>
+        <a href="{% url 'dashboard' %}">← Voltar ao Dashboard</a>
+    </div>
+</body>
+</html>

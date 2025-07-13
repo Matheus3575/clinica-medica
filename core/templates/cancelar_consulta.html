@@ -29,7 +29,7 @@
                 <tbody>
                     {% for consulta in consultas %}
                     <tr>
-                        <td>{{ consulta.paciente.nome }}</td>
+                        <td><a href="{% url 'paciente_perfil' consulta.paciente.id %}">{{ consulta.paciente.nome }}</a></td>
                         <td>{{ consulta.data_hora|date:"d/m/Y H:i" }}</td>
                         <td>{{ consulta.sala.numero }}</td>
                         <td>

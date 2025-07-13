@@ -24,15 +24,16 @@
                 {% for c in consultas %}
                     <li>
                         <a href="?id={{ c.id }}" tabindex="0">
-                            {{ c.paciente.nome }} - {{ c.data_hora|date:"H:i" }} - Sala {{ c.sala.numero }}
+                            <a href="{% url 'paciente_perfil' c.paciente.id %}">{{ c.paciente.nome }}</a> - {{ c.data_hora|date:"H:i" }} - Sala {{ c.sala.numero }}
                         </a>
+                        
                     </li>
                 {% endfor %}
             </ul>
         </section>
 
         <section class="info-consulta card">
-            <p><strong>Paciente:</strong> {{ consulta.paciente.nome }}</p>
+            <p><strong>Paciente:</strong> <a href="{% url 'paciente_perfil' consulta.paciente.id %}">{{ consulta.paciente.nome }}</a></p>
             <p><strong>Data e Hora:</strong> {{ consulta.data_hora|date:"d/m/Y H:i" }}</p>
             <p><strong>Médico:</strong> {{ consulta.medico.nome }}</p>
             <p><strong>Sala:</strong> {{ consulta.sala.numero }}</p>
