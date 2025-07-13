@@ -1,8 +1,7 @@
 -- Consulta 1: Busca com Substring (case insensitive)
--- Retorna pacientes cujo prontuário contém a substring '001', ignorando maiúsculas/minúsculas
-SELECT id_paciente, nome, prontuario
-FROM Paciente
-WHERE prontuario LIKE '%001%' COLLATE NOCASE;
+SELECT id_medicamento, nome, preco, fabricante
+FROM Medicamento
+WHERE nome LIKE '%aas%' COLLATE NOCASE;
 
 -- Consulta 2: Operação de Pesquisa
 -- Listar pacientes com IMC maior que 25 (sobrepeso)
@@ -68,14 +67,15 @@ VALUES (1, 2, '500mg', 5, 5, '2x ao dia', FALSE, '08:00:00');
 
 SELECT id_medicamento, nome, estoque FROM Medicamento WHERE id_medicamento = 2;
 
--- Consulta com Quantificador ANY
+-- Consulta com Quantificador ALL
 -- Retorna prescrições cuja dosagem é maior que alguma dosagem anterior do mesmo medicamento
 SELECT p1.id_consulta, p1.id_medicamento, p1.dosagem
 FROM Prescricao p1
-WHERE EXISTS (
-    SELECT 1 FROM Prescricao p2
+WHERE CAST(REPLACE(p1.dosagem, 'mg', '') AS INTEGER) > ALL (
+    SELECT CAST(REPLACE(p2.dosagem, 'mg', '') AS INTEGER)
+    FROM Prescricao p2
     WHERE p2.id_medicamento = p1.id_medicamento
-      AND CAST(REPLACE(p1.dosagem, 'mg', '') AS INTEGER) > CAST(REPLACE(p2.dosagem, 'mg', '') AS INTEGER)
+      AND p2.id_consulta <> p1.id_consulta
 );
 
 
@@ -99,10 +99,22 @@ WHERE p.id_paciente IN (
     SELECT id_acompanhante FROM Acompanhantes WHERE id_acompanhante IS NOT NULL
 );
 
--- Histórico de consultas do paciente
-SELECT c.data_hora, c.consulta_descritiva, m.nome AS medico
+-- Histórico de consultas do paciente(Agrupamento + HAVING)
+SELECT p.nome, c.consulta_descritiva, c.data_hora
 FROM Consulta c
-JOIN Medico m ON c.id_medico = m.id_medico
-WHERE c.id_paciente = ?
-ORDER BY c.data_hora DESC
-LIMIT 5;
+JOIN Paciente p ON c.id_paciente = p.id_paciente
+WHERE c.id_consulta IN (
+    SELECT id_consulta
+    FROM (
+        SELECT id_consulta,
+               ROW_NUMBER() OVER (PARTITION BY id_paciente ORDER BY data_hora DESC) AS rn
+        FROM Consulta
+        WHERE id_paciente IN (
+            SELECT id_paciente
+            FROM Consulta
+            GROUP BY id_paciente
+            HAVING COUNT(*) > 1
+        )
+    ) sub
+    WHERE rn = 1
+);

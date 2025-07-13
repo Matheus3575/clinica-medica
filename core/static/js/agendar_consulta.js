@@ -75,3 +75,37 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     });
 });
+document.addEventListener('DOMContentLoaded', function () {
+    const dataHoraInput = document.querySelector("input[name='data_hora']");
+    const consultasDiv = document.getElementById('consultas-dia');
+
+    dataHoraInput.addEventListener('change', function () {
+        const dataHora = this.value;
+        if (!dataHora) {
+            consultasDiv.innerHTML = '';
+            return;
+        }
+
+        const dataSomente = dataHora.split('T')[0]; // pega só a parte da data (aaaa-mm-dd)
+
+        fetch(`/consultas-dia/?data=${encodeURIComponent(dataSomente)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.erro) {
+                    consultasDiv.textContent = data.erro;
+                } else if (data.consultas.length === 0) {
+                    consultasDiv.textContent = "Não há consultas nesse dia.";
+                } else {
+                    let html = "<strong>Consultas agendadas para esse dia:</strong><br/><ul>";
+                    data.consultas.forEach(c => {
+                        html += `<li><strong>${c.nome}</strong> - ${c.hora} - Sala ${c.sala}</li>`;
+                    });
+                    html += "</ul>";
+                    consultasDiv.innerHTML = html;
+                }
+            })
+            .catch(() => {
+                consultasDiv.textContent = "Erro ao buscar consultas.";
+            });
+    });
+});
