@@ -1,4 +1,3 @@
-</script>
 document.addEventListener('DOMContentLoaded', function() {
     const campoDataHora = document.querySelector('input[name="data_hora"]');
     const ulConsultas = document.getElementById('consultas-dia-lista');
@@ -48,4 +47,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
-<script>
