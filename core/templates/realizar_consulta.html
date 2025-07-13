@@ -18,7 +18,7 @@
             </ul>
         {% endif %}
 
-        <section class="consultas-list">
+        <section class="consultas-list card">
             <p><strong>Consultas de Hoje:</strong></p>
             <ul>
                 {% for c in consultas %}
@@ -31,14 +31,14 @@
             </ul>
         </section>
 
-        <section class="info-consulta">
+        <section class="info-consulta card">
             <p><strong>Paciente:</strong> {{ consulta.paciente.nome }}</p>
             <p><strong>Data e Hora:</strong> {{ consulta.data_hora|date:"d/m/Y H:i" }}</p>
             <p><strong>Médico:</strong> {{ consulta.medico.nome }}</p>
             <p><strong>Sala:</strong> {{ consulta.sala.numero }}</p>
         </section>
 
-        <section class="info-alergias" style="margin-top: 20px;">
+        <section class="info-alergias card" style="margin-top: 20px;">
             <p><strong>Alergias do paciente:</strong></p>
             {% if alergias %}
                 <ul>
@@ -56,7 +56,7 @@
             {% endif %}
         </section>
 
-        <section class="consultas-passadas" style="margin-top: 20px;">
+        <section class="consultas-passadas card" style="margin-top: 20px;">
             <p><strong>Consultas passadas:</strong></p>
             {% if consultas_passadas %}
                 <ul>
@@ -74,7 +74,7 @@
             {% endif %}
         </section>
 
-        <form method="post" novalidate id="form-finalizar">
+        <form method="post" novalidate id="form-finalizar" class="card">
             {% csrf_token %}
             {% if form.non_field_errors %}
                 <div class="alerta">
@@ -94,7 +94,7 @@
             {{ form.consulta_descritiva }}
         </form>
 
-        <section style="margin-top: 30px;">
+        <section class="card" style="margin-top: 30px;">
             <h3>Prescrição</h3>
             <form method="post">
                 {% csrf_token %}
@@ -122,7 +122,7 @@
             </ul>
         </section>
 
-        <section style="margin-top: 30px;">
+        <section class="card" style="margin-top: 30px;">
             <h3>Agendar Nova Consulta (Retorno ou Acompanhante)</h3>
             <form method="post" novalidate>
                 {% csrf_token %}
